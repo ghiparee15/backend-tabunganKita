@@ -2,19 +2,19 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 
 // Import routes
-import authRoutes from './routes/auth.js';
-import savingsRoutes from './routes/savings.js';
-import transactionsRoutes from './routes/transactions.js';
-import todosRoutes from './routes/todos.js';
+// import authRoutes from './routes/auth.js';
+// import savingsRoutes from './routes/savings.js';
+// import transactionsRoutes from './routes/transactions.js';
+// import todosRoutes from './routes/todos.js';
 
 // Load environment variables
 dotenv.config();
 
 // Initialize Prisma Client
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 // Initialize Express app
 const app = express();
@@ -33,18 +33,38 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/savings', savingsRoutes);
-app.use('/api/transactions', transactionsRoutes);
-app.use('/api/todos', todosRoutes);
+// Routes - Temporarily disabled for Prisma fix
+// app.use('/api/auth', authRoutes);
+// app.use('/api/savings', savingsRoutes);
+// app.use('/api/transactions', transactionsRoutes);
+// app.use('/api/todos', todosRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
   res.json({
     message: 'Tabungan Kita API Server',
     status: 'running',
-    version: '1.0.0'
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Test endpoint
+app.get('/api/test', (req, res) => {
+  res.json({
+    message: 'API Test Successful',
+    status: 'OK',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
   });
 });
 
