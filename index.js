@@ -39,6 +39,15 @@ app.use('/api/savings', savingsRoutes);
 app.use('/api/transactions', transactionsRoutes);
 app.use('/api/todos', todosRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Tabungan Kita API Server',
+    status: 'running',
+    version: '1.0.0'
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ message: 'Server is running!' });
