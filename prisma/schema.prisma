@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  savings      Saving[]
+  transactions Transaction[]
+  todos        Todo[]
+
+  @@map("users")
+}
+
+model Saving {
+  id                Int      @id @default(autoincrement())
+  userId            Int
+  monthlyIncome     Float    // Uang jajan bulanan/mingguan
+  savingTarget      Float    // Target tabungan
+  availableAmount   Float    // Sisa uang (monthlyIncome - savingTarget)
+  dailyBudget       Float    // Budget harian (availableAmount / jumlah hari)
+  period            String   @default("monthly") // "monthly" atau "weekly"
+  month             Int
+  year              Int
+  weekNumber        Int?     // Nomor minggu (1-4) untuk periode mingguan
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@unique([userId, month, year, weekNumber])
+  @@map("savings")
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  savingId    Int
+  amount      Float    // Bisa positif (pengeluaran) atau negatif (penghematan)
+  type        String   @default("expense") // "expense" atau "saving"
+  description String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saving Saving @relation(fields: [savingId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
+
+model Todo {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String
+  description String?
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("todos")
+}
