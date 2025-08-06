@@ -27,7 +27,7 @@ app.use(cors({
     'http://localhost:3000', // Local development
     'https://frontend-tabungan-kita.vercel.app', // Production frontend
     'https://*.vercel.app', // All Vercel apps
-    'https://*.railway.app' // Railway deployment
+    'https://*.onrender.com' // Render deployment
   ],
   credentials: true
 }));

@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "prisma generate",
-    "postinstall": "prisma generate",
+    "build": "npm install && npx prisma generate",
+    "postinstall": "npx prisma generate",
+    "render-build": "npm install && npx prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
