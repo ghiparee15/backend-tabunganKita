@@ -23,7 +23,11 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:3000', // Frontend URL
+  origin: [
+    'http://localhost:3000', // Local development
+    'https://frontend-tabungan-kita.vercel.app', // Production frontend
+    'https://*.vercel.app' // All Vercel apps
+  ],
   credentials: true
 }));
 app.use(express.json());
