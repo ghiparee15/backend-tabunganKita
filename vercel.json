@@ -11,5 +11,14 @@
             "src": "/(.*)",
             "dest": "index.js"
         }
-    ]
+    ],
+    "functions": {
+        "index.js": {
+            "maxDuration": 30
+        }
+    },
+    "env": {
+        "DATABASE_URL": "@database_url",
+        "JWT_SECRET": "@jwt_secret"
+    }
 }
